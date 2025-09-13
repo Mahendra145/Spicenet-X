@@ -26,21 +26,32 @@ pool.on("error", (err, client) => {
   console.error("❌ Unexpected error on idle client:", err);
 });
 
-// Connect and handle errors on this client
-pool.connect()
-  .then(client => {
+// Connect safely without crashing
+(async () => {
+  try {
+    const client = await pool.connect();
     console.log("✅ Connected to NeonDB");
 
     // Catch errors on this specific client
     client.on("error", err => {
       console.error("❌ Client error during connection:", err);
     });
-    
-    // Release the client back to the pool
-    client.release();
-  })
-  .catch(err => console.error("❌ NeonDB connection error:", err.message));
 
+    client.release();
+  } catch (err) {
+    console.error("❌ NeonDB connection failed at startup:", err);
+    // Do NOT throw → app keeps running
+  }
+})();
+
+// Global safety nets
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("❌ Unhandled Rejection:", reason);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("❌ Uncaught Exception:", err);
+});
 // Middleware
 app.use(express.json());
 app.use((req, res, next) => {
@@ -374,6 +385,7 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
 
 import serverless from "serverless-http";
 export const handler = serverless(app);
+
 
 
 
