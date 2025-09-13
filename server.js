@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(process.cwd(), "public"))); 
+app.use(express.static(path.join(process.cwd(), "Public"))); 
 
 // === DB Setup ===
 console.log("🔌 Connecting to NeonDB...");
@@ -180,7 +180,7 @@ app.get("/api/spiceflow/leaderboard", async (req, res) => {
 
 // Serve admin page
 app.get("/admin.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin.html"));
+  res.sendFile(path.join(__dirname, "Public", "admin.html"));
 });
 
 // Resolve username → numeric X user ID
@@ -380,12 +380,13 @@ app.post("/api/spiceflow/claim", async (req, res) => {
 // === FRONTEND FALLBACK (must be last) ===
 app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
   console.log("📄 Serving frontend for", req.url);
-  res.sendFile(path.join(__dirname, "public", "index0.html"));
+  res.sendFile(path.join(__dirname, "Public", "index0.html"));
 });
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
 
 
 
