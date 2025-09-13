@@ -25,6 +25,9 @@ pool.connect()
   .then(() => console.log("✅ Connected to NeonDB"))
   .catch(err => console.error("❌ NeonDB connection error:", err.message));
 
+pool.on("error", (err, client) => {
+  console.error("❌ Unexpected error on idle client:", err);
+});
 
 // Middleware
 app.use(express.json());
@@ -359,5 +362,6 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
 
 import serverless from "serverless-http";
 export const handler = serverless(app);
+
 
 
