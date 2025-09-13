@@ -43,7 +43,7 @@ app.get("/auth/login", (req, res) => {
   const params = new URLSearchParams({
     response_type: "code",
     client_id: process.env.X_CLIENT_ID,
-    redirect_uri: "http://localhost:3000/auth/x/callback",
+    redirect_uri: "https://spicenet-x.vercel.app/auth/x/callback",
     scope: "tweet.read users.read follows.read like.read offline.access",
     state: "spiceflow123",
     code_challenge: "challenge", // TODO: replace with real PKCE challenge
@@ -359,3 +359,4 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
 
 import serverless from "serverless-http";
 export const handler = serverless(app);
+
