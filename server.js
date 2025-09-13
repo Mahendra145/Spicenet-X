@@ -21,13 +21,25 @@ const pool = new pg.Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-pool.connect()
-  .then(() => console.log("✅ Connected to NeonDB"))
-  .catch(err => console.error("❌ NeonDB connection error:", err.message));
-
+// Handle errors on idle clients
 pool.on("error", (err, client) => {
   console.error("❌ Unexpected error on idle client:", err);
 });
+
+// Connect and handle errors on this client
+pool.connect()
+  .then(client => {
+    console.log("✅ Connected to NeonDB");
+
+    // Catch errors on this specific client
+    client.on("error", err => {
+      console.error("❌ Client error during connection:", err);
+    });
+    
+    // Release the client back to the pool
+    client.release();
+  })
+  .catch(err => console.error("❌ NeonDB connection error:", err.message));
 
 // Middleware
 app.use(express.json());
@@ -362,6 +374,7 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
 
 import serverless from "serverless-http";
 export const handler = serverless(app);
+
 
 
 
