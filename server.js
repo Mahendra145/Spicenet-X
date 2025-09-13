@@ -81,7 +81,7 @@ const tokenRes = await fetch("https://api.twitter.com/2/oauth2/token", {
   body: new URLSearchParams({
     code,
     grant_type: "authorization_code",
-    redirect_uri: "http://localhost:3000/auth/x/callback",
+    redirect_uri: "http://spicenet-x.vercel.app/auth/x/callback",
     code_verifier: "challenge"
   }),
 });
@@ -359,4 +359,5 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
 
 import serverless from "serverless-http";
 export const handler = serverless(app);
+
 
