@@ -383,8 +383,11 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index0.html"));
 });
 
-import serverless from "serverless-http";
-export const handler = serverless(app);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
 
 
 
