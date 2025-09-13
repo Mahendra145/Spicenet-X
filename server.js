@@ -107,7 +107,7 @@ const tokenRes = await fetch("https://api.twitter.com/2/oauth2/token", {
   body: new URLSearchParams({
     code,
     grant_type: "authorization_code",
-    redirect_uri: "http://spicenet-x.onrender.com/auth/x/callback",
+    redirect_uri: "https://spicenet-x.onrender.com/auth/x/callback",
     code_verifier: "challenge"
   }),
 });
@@ -386,6 +386,7 @@ app.get(/^(?!\/api|\/auth).*$/, (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
 
 
 
